@@ -1,6 +1,8 @@
 # Build results
 **/bin/
 **/Bin/
+**/obj/
+**/Obj/
 
 # Visual Studio generated
 .vs/
