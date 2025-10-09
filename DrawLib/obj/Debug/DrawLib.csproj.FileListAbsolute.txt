@@ -1,9 +1,0 @@
-C:\Users\Арсений\source\repos\FiguresTest\DrawLib\bin\Debug\DrawLib.dll
-C:\Users\Арсений\source\repos\FiguresTest\DrawLib\bin\Debug\DrawLib.pdb
-C:\Users\Арсений\source\repos\FiguresTest\DrawLib\bin\Debug\FiguresLib.dll
-C:\Users\Арсений\source\repos\FiguresTest\DrawLib\bin\Debug\FiguresLib.pdb
-C:\Users\Арсений\source\repos\FiguresTest\DrawLib\obj\Debug\DrawLib.csproj.AssemblyReference.cache
-C:\Users\Арсений\source\repos\FiguresTest\DrawLib\obj\Debug\DrawLib.csproj.CoreCompileInputs.cache
-C:\Users\Арсений\source\repos\FiguresTest\DrawLib\obj\Debug\DrawLib.csproj.Up2Date
-C:\Users\Арсений\source\repos\FiguresTest\DrawLib\obj\Debug\DrawLib.dll
-C:\Users\Арсений\source\repos\FiguresTest\DrawLib\obj\Debug\DrawLib.pdb
