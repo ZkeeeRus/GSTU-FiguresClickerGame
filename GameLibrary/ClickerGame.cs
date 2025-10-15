@@ -2,6 +2,7 @@
 using FiguresLib;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,9 +45,8 @@ namespace GameLibrary
             foreach (Figure f in clickedFigures)
                 score += f.GetScore();
 
-            foreach(Figure f in missedFigures)
+            foreach (Figure f in missedFigures)
                 score -= f.GetScore() / 3;
-
 
 
             return score < 0 ? 0 : score;
@@ -57,29 +57,25 @@ namespace GameLibrary
             Figure figure = FigureFabric.GetNewFigure(maxX, maxY, minX, minY);
 
             activeFigures.Add(figure);
-
-            draw.Draw(figure);
         }
 
         public void LifeCycle()
         {
-            Queue<Figure> removeFigures = new Queue<Figure>();
+            var toRemove = new List<Figure>();
 
-            foreach (Figure f in activeFigures)
+            foreach (var f in activeFigures)
             {
                 f.DecriseLifetime();
                 if (!f.IsAlive())
-                    removeFigures.Enqueue(f);
+                {
+                    toRemove.Add(f);
+                }
             }
 
-            while (removeFigures.Count > 0)
+            foreach (var f in toRemove)
             {
-                var figure = removeFigures.Dequeue();
-
-                missedFigures.Add(figure);
-                activeFigures.Remove(figure);
-
-                EraseFigure(figure);
+                activeFigures.Remove(f);
+                missedFigures.Add(f);
             }
         }
 
@@ -106,31 +102,22 @@ namespace GameLibrary
 
                 clickedFigures.Add(figure);
                 activeFigures.Remove(figure);
-
-                EraseFigure(figure);
             }
         }
 
-
-        public void DrawAllFigures()
+        public void Render()
         {
-            foreach (Figure figure in activeFigures)
+            draw.Clear();
+            foreach (var figure in activeFigures)
             {
+                figure.Update();
                 draw.Draw(figure);
             }
         }
-
-        public void EraseAllFigures()
+        public void ClearAll()
         {
-            foreach (Figure figure in activeFigures)
-            {
-                draw.Erase(figure);
-            }
-        }
-
-        public void EraseFigure(Figure figure)
-        {
-            draw.Erase(figure);
+            draw.Clear();
+            Debug.Write("test");
         }
     }
 }
