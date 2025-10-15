@@ -9,9 +9,9 @@ namespace FiguresLib
 {
     public class Circle : Figure
     {
-        public Circle(Point[] points, Color color, int lifeTime) : base(points, FigureType.Cicle, lifeTime, color)
+        public Circle(Point[] points, Color color, int lifeTime, bool isPulsing)
+            : base(points, FigureType.Cicle, lifeTime, color, isPulsing)
         {
-
         }
 
         public double Radius()
@@ -21,22 +21,14 @@ namespace FiguresLib
 
         public override bool IsContainPoint(Point point)
         {
-            return (Math.Pow(point.x - points[0].x, 2) + Math.Pow(point.y - points[0].y, 2)) <= Math.Pow(Radius(), 2);
+            double distance = points[0].Lenght(point);
+            double scaledRadius = Radius() * Scale;
+            return distance <= scaledRadius;
         }
 
-        public override double Perimetr()
-        {
-            return 2 * Math.PI * Radius();
-        }
+        public override double Perimetr() => 2 * Math.PI * Radius();
+        public override double Square() => Math.PI * Radius() * Radius();
 
-        public override double Square()
-        {
-            return Math.PI * Radius() * Radius();
-        }
-
-        public override string ToString()
-        {
-            return $"Окружность: " + base.ToString();
-        }
+        public override string ToString() => $"Окружность: {base.ToString()}";
     }
 }

@@ -10,7 +10,7 @@ namespace DrawLib
     public interface IDraw
     {
         void Draw(Figure figure);
-
         void Erase(Figure figure);
+        void Clear();
     }
 }

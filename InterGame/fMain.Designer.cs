@@ -20,7 +20,7 @@
             base.Dispose(disposing);
         }
 
-        #region Код, автоматически созданный конструктором форм Windows
+         #region Код, автоматически созданный конструктором форм Windows
 
         /// <summary>
         /// Требуемый метод для поддержки конструктора — не изменяйте 
@@ -42,6 +42,7 @@
             this.tsScore = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.timerGameTime = new System.Windows.Forms.Timer(this.components);
+            this.timerFrameUpdate = new System.Windows.Forms.Timer(this.components);
             this.pGameArea.SuspendLayout();
             this.menuBar.SuspendLayout();
             this.sStrip.SuspendLayout();
@@ -73,7 +74,7 @@
             this.bStart.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.bStart.BackColor = System.Drawing.Color.LightGreen;
             this.bStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bStart.Location = new System.Drawing.Point(372, 210);
+            this.bStart.Location = new System.Drawing.Point(367, 230);
             this.bStart.Margin = new System.Windows.Forms.Padding(4);
             this.bStart.Name = "bStart";
             this.bStart.Size = new System.Drawing.Size(154, 57);
@@ -118,7 +119,7 @@
             // menuBarNewGameButton
             // 
             this.menuBarNewGameButton.Name = "menuBarNewGameButton";
-            this.menuBarNewGameButton.Size = new System.Drawing.Size(180, 22);
+            this.menuBarNewGameButton.Size = new System.Drawing.Size(132, 22);
             this.menuBarNewGameButton.Text = "New Game";
             this.menuBarNewGameButton.Click += new System.EventHandler(this.bStart_Click);
             // 
@@ -158,6 +159,11 @@
             this.timerGameTime.Interval = 10000;
             this.timerGameTime.Tick += new System.EventHandler(this.timerGameTime_Tick);
             // 
+            // timerFrameUpdate
+            // 
+            this.timerFrameUpdate.Interval = 16;
+            this.timerFrameUpdate.Tick += new System.EventHandler(this.Update);
+            // 
             // fMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -176,6 +182,7 @@
             this.Name = "fMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game";
+            this.Load += new System.EventHandler(this.fMain_Load);
             this.pGameArea.ResumeLayout(false);
             this.pGameArea.PerformLayout();
             this.menuBar.ResumeLayout(false);
@@ -201,6 +208,7 @@
         private System.Windows.Forms.ToolStripStatusLabel tsScore;
         public System.Windows.Forms.Timer timerUpdate;
         public System.Windows.Forms.Timer timerGameTime;
+        private System.Windows.Forms.Timer timerFrameUpdate;
     }
 }
 

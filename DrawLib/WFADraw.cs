@@ -5,19 +5,37 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DrawLib
 {
     public class WFADraw : IDraw
     {
-        public Graphics graphics;
+        public Graphics bufferGraphics;
+        private Bitmap buffer;
         private Color backgroundColor;
+        private Control renderTarget;
 
 
-        public WFADraw(Color background, ref Graphics graphics)
+        public WFADraw(Control renderTarget)
         {
-            backgroundColor = background;
-            this.graphics = graphics;
+            this.renderTarget = renderTarget;
+            this.backgroundColor = renderTarget.BackColor;
+            ResizeBuffer();
+        }
+
+        public void ResizeBuffer()
+        {
+            if (buffer != null)
+            {
+                buffer.Dispose();
+                bufferGraphics?.Dispose();
+            }
+
+            buffer = new Bitmap(renderTarget.Width, renderTarget.Height);
+            bufferGraphics = Graphics.FromImage(buffer);
+
+            Clear();
         }
 
         public void Erase(Figure figure)
@@ -32,42 +50,53 @@ namespace DrawLib
 
         public void Draw(Figure figure, Color color)
         {
-            if (figure == null || graphics == null)
-                return;
+            if (figure == null || bufferGraphics == null) return;
 
-
-            Brush brush = new SolidBrush(color);
-            int x, y, width, height;
-
-            switch (figure.Type)
+            using (Brush brush = new SolidBrush(color))
             {
-                case FigureType.Cicle:
-                    Circle circle = figure as Circle;
+                switch (figure.type)
+                {
+                    case FigureType.Cicle:
+                        Circle circle = figure as Circle;
+                        double baseRadius = circle.Radius();
+                        double scaledRadius = baseRadius * figure.Scale; // ← масштаб
 
-                    int r = (int)Math.Round(circle.Radius());
+                        int r = (int)Math.Round(scaledRadius);
+                        int x = (int)circle.points[0].x - r;
+                        int y = (int)circle.points[0].y - r;
 
-                    width = 2 * r;
-                    height = width;
+                        bufferGraphics.FillEllipse(brush, x, y, 2 * r, 2 * r);
+                        break;
 
-                    x = (int)circle.points[0].x - r;
-                    y = (int)circle.points[0].y - r;
+                    case FigureType.Qudrant:
+                        Quadrant quad = figure as Quadrant;
+                        double baseSide = quad.Side();
+                        double scaledSide = baseSide * figure.Scale; // ← масштаб
 
-                    graphics.FillEllipse(brush, x, y, width, height);
+                        int x2 = (int)quad.points[0].x;
+                        int y2 = (int)quad.points[0].y;
+                        int w = (int)Math.Round(scaledSide);
+                        int h = w;
 
-                    break;
+                        bufferGraphics.FillRectangle(brush, x2, y2, w, h);
+                        break;
+                }
+            }
+        }
 
-                case FigureType.Qudrant:
-                    Quadrant quadrant = figure as Quadrant;
+        public void Clear()
+        {
+            if (bufferGraphics != null)
+            {
+                bufferGraphics.Clear(backgroundColor);
+            }
+        }
 
-                    x = (int)quadrant.points[0].x;
-                    y = (int)quadrant.points[0].y;
-
-                    width = (int)quadrant.Side();
-                    height = width;
-
-                    graphics.FillRectangle(brush, x, y, width, height);
-
-                    break;
+        public void Present()
+        {
+            using (Graphics screenGraphics = renderTarget.CreateGraphics())
+            {
+                screenGraphics.DrawImage(buffer, 0, 0);
             }
         }
     }

@@ -16,7 +16,6 @@ namespace InterGame
     {
         private ClickerGame clickerGame = null;
         private WFADraw draw = null;
-        private Graphics graphics = null;
 
         private bool isPlaying = false;
 
@@ -24,8 +23,21 @@ namespace InterGame
         {
             InitializeComponent();
 
-            graphics = pGameArea.CreateGraphics();
-            draw = new WFADraw(pGameArea.BackColor, ref graphics);
+            draw = new WFADraw(pGameArea);
+        }
+
+        private void fMain_Load(object sender, EventArgs e)
+        {
+            timerFrameUpdate.Start();
+        }
+
+        private void Update(object sender, EventArgs e)
+        {
+            if (clickerGame != null && isPlaying)
+            {
+                clickerGame.Render();
+                draw.Present();
+            }
         }
 
         private void bStart_Click(object sender, EventArgs e)
@@ -76,9 +88,11 @@ namespace InterGame
 
         private void timerGameTime_Tick(object sender, EventArgs e)
         {
-            clickerGame.EraseAllFigures();
             timerUpdate.Stop();
             timerGameTime.Stop();
+
+            clickerGame.ClearAll();
+            draw.Present();
 
             lPlayerText.Visible = true;
             tbPlayerName.Visible = true;
@@ -88,12 +102,14 @@ namespace InterGame
 
             int score = clickerGame.GetScore();
 
+            clickerGame = null;
+
             if (score >= 200)
                 MessageBox.Show($"Your score is {score}", "Congrats!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else if(score > 0)
                 MessageBox.Show($"Your score is {score}, try harder!", "Meh..", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             else
-                MessageBox.Show($"Are you kidding me?", "Oh deer..", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"You dont even trying!", "Its so weak", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

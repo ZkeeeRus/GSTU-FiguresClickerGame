@@ -30,17 +30,18 @@ namespace FiguresLib
             Color color = Color.FromArgb(R, G, B);
 
             int lifeTime = rand.Next(10, 51);
+            bool isPulsing = rand.NextDouble() < 0.3;
 
             switch (typeFigure)
             {
                 // Quadrant
                 case 0:
-                    figure = new Quadrant(points, color, lifeTime);
+                    figure = new Quadrant(points, color, lifeTime, isPulsing);
                     break;
 
                 // Circle
                 case 1:
-                    figure = new Circle(points, color, lifeTime);
+                    figure = new Circle(points, color, lifeTime, isPulsing);
                     break;
             }
 
